@@ -6,6 +6,9 @@ import './index.css';
 const App = () => {
   const [matches, setMatches] = useState(INITIAL_MATCHES);
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
+  const [showSupportModal, setShowSupportModal] = useState(false);
+  const [supportStep, setSupportStep] = useState(1);
+  const [supportAmount, setSupportAmount] = useState("");
 
   const handleScoreChange = (id, field, value) => {
     setMatches(prev => prev.map(m => {
@@ -246,6 +249,124 @@ const App = () => {
               <h3>Changes</h3>
               <p>We may update this policy from time to time by posting a new version on this page. Your continued use of the website after changes indicates your acceptance of the revised policy.</p>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Floating Football Button */}
+      <button 
+        className="floating-football" 
+        onClick={() => { setShowSupportModal(true); setSupportStep(1); }}
+        title="Support the creator!"
+      >
+        ⚽
+      </button>
+
+      {/* Support / Tip Modal */}
+      {showSupportModal && (
+        <div className="modal-overlay" onClick={() => setShowSupportModal(false)}>
+          <div className="modal-content support-modal" onClick={e => e.stopPropagation()}>
+            {supportStep === 1 ? (
+              <>
+                <div className="modal-header support-header">
+                  <h2>Support sl-playoffs.page.gd</h2>
+                  <button className="close-button" onClick={() => setShowSupportModal(false)}>&times;</button>
+                </div>
+                <div className="modal-body support-body">
+                  <div className="support-amount-box">
+                    <span className="currency">€</span>
+                    <input 
+                      type="number" 
+                      placeholder="Enter amount" 
+                      className="amount-input" 
+                      value={supportAmount}
+                      onChange={(e) => setSupportAmount(e.target.value)}
+                    />
+                    <div className="quick-amounts">
+                      <button onClick={() => setSupportAmount("9")}>+9</button>
+                      <button onClick={() => setSupportAmount("21")}>+21</button>
+                      <button onClick={() => setSupportAmount("43")}>+43</button>
+                    </div>
+                  </div>
+                  
+                  <input type="text" placeholder="Name or @yoursocial" className="support-input" />
+                  <textarea placeholder="Say something nice..." className="support-textarea"></textarea>
+                  
+                  <label className="monthly-checkbox">
+                    <input type="checkbox" /> Make this monthly
+                  </label>
+                  
+                  <button className="support-submit-btn" onClick={() => setSupportStep(2)}>
+                    Support
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="modal-header support-header checkout-header">
+                  <button className="back-button" onClick={() => setSupportStep(1)}>← Back</button>
+                  <h2>Checkout</h2>
+                  <button className="close-button" onClick={() => setShowSupportModal(false)}>&times;</button>
+                </div>
+                <div className="modal-body checkout-body">
+                  <div className="google-pay-btn">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Google_Pay_Logo.svg" alt="GPay" className="gpay-logo" />
+                  </div>
+                  
+                  <div className="pay-divider">
+                    <span>PAY WITH</span>
+                  </div>
+
+                  <div className="checkout-form">
+                    <input type="email" placeholder="Email" className="checkout-input" />
+                    
+                    <div className="payment-methods">
+                      <div className="method-box active">
+                        <span className="method-icon">💳</span>
+                        <span>Card</span>
+                      </div>
+                      <div className="method-box">
+                        <span className="method-icon">🏦</span>
+                        <span>iDEAL | Wero</span>
+                      </div>
+                    </div>
+
+                    <div className="secure-checkout">
+                      🔒 Secure, fast checkout with Link
+                    </div>
+
+                    <div className="card-input-group">
+                      <label>Card number</label>
+                      <div className="card-input-wrapper">
+                        <input type="text" placeholder="1234 1234 1234 1234" maxLength="19" />
+                        <div className="card-icons">
+                          <span className="card-mc"></span>
+                          <span className="card-vi"></span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="card-row">
+                      <div className="card-input-group">
+                        <label>Expiration date</label>
+                        <input type="text" placeholder="MM / YY" maxLength="5" />
+                      </div>
+                      <div className="card-input-group">
+                        <label>Security code</label>
+                        <input type="text" placeholder="CVC" maxLength="3" />
+                      </div>
+                    </div>
+
+                    <button className="support-submit-btn checkout-pay-btn" onClick={() => {
+                      alert("Προσοχή: Αυτή είναι μόνο η σχεδίαση (UI) που ζήτησες! Για να δέχεσαι πραγματικά χρήματα, πρέπει να φτιάξεις λογαριασμό στο Stripe (stripe.com) και να αντικαταστήσουμε το κουμπί με το επίσημο δικό τους Payment Link.");
+                      setShowSupportModal(false);
+                    }}>
+                      Pay {supportAmount ? `€${supportAmount}` : ''}
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}
