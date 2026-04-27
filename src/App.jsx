@@ -5,6 +5,7 @@ import './index.css';
 
 const App = () => {
   const [matches, setMatches] = useState(INITIAL_MATCHES);
+  const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
 
   const handleScoreChange = (id, field, value) => {
     setMatches(prev => prev.map(m => {
@@ -214,6 +215,40 @@ const App = () => {
           </div>
         </div>
       </div>
+      
+      <footer className="app-footer">
+        <p className="copyright">Copyright &copy; 2026 CHRISTOS G D</p>
+        <div className="footer-links">
+          <a href="https://github.com/p23288/Superleague1-Playoffs-Simulator" target="_blank" rel="noopener noreferrer">View on GitHub</a>
+          <span className="separator">|</span>
+          <button className="link-button" onClick={() => setShowPrivacyPolicy(true)}>Privacy Policy</button>
+        </div>
+      </footer>
+
+      {showPrivacyPolicy && (
+        <div className="modal-overlay" onClick={() => setShowPrivacyPolicy(false)}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>Privacy Policy</h2>
+              <button className="close-button" onClick={() => setShowPrivacyPolicy(false)}>&times;</button>
+            </div>
+            <div className="modal-body">
+              <p>Thank you for using our website. This page provides information regarding how we handle data and display advertisements.</p>
+              
+              <h3>Use of Google AdSense</h3>
+              <p>We display Google AdSense advertisements on this website. Google may use cookies to serve ads based on your prior visits to this or other websites. Google's use of advertising cookies enables it and its partners to serve ads to our users based on their visit to our site and/or other sites on the Internet.</p>
+              
+              <p>You may opt out of personalized advertising by visiting Google Ads Settings. Alternatively, you can opt out of a third-party vendor's use of cookies by visiting the YourAdChoices website.</p>
+              
+              <h3>Data Collection</h3>
+              <p>We do not collect personal data beyond what is necessary for displaying standings and serving ads. Any data collected by Google is governed by Google's own privacy policies. We encourage you to review Google's Privacy Policy for more details.</p>
+              
+              <h3>Changes</h3>
+              <p>We may update this policy from time to time by posting a new version on this page. Your continued use of the website after changes indicates your acceptance of the revised policy.</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
